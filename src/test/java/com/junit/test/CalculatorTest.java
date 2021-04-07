@@ -1,15 +1,21 @@
 package com.junit.test;
 
 import com.junit.Calculator;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
-
+import org.influxdb.InfluxDB;
+import org.influxdb.InfluxDBFactory;
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CalculatorTest {
     private Calculator calculator;
+
+    @BeforeAll
+    public static void databaseSetup() {
+        InfluxDB influxDB = InfluxDBFactory.connect("http://127.0.0.1:8086");
+        influxDB.deleteDatabase("testDB");
+        influxDB.createDatabase("testDB");
+        influxDB.close();
+    }
 
     @BeforeEach
     public void setUp() throws Exception {
