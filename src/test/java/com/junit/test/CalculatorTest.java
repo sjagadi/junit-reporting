@@ -12,7 +12,9 @@ public class CalculatorTest {
     @BeforeAll
     public static void databaseSetup() {
         InfluxDB influxDB = InfluxDBFactory.connect("http://127.0.0.1:8086");
-        influxDB.deleteDatabase("testDB");
+        if(influxDB.databaseExists("testDB")){
+            influxDB.deleteDatabase("testDB");
+        }
         influxDB.createDatabase("testDB");
         influxDB.close();
     }
